@@ -38,7 +38,7 @@ class riscv64_emu(pluginTemplate):
         # emulator, this variable could point to where the iss binary is located. If 'PATH variable
         # is missing in the config.ini we can hardcode the alternate here.
         self.dut_exe = os.path.join(
-            config['PATH'] if 'PATH' in config else "", "/home/leesum/workhome/riscv64-emu/target/debug/riscv64-emu")
+            config['PATH'] if 'PATH' in config else "", "/home/leesum/workhome/riscof-test/riscv64-emu")
 
         # Number of parallel jobs that can be spawned off by RISCOF
         # for various actions performed in later functions, specifically to run the tests in
@@ -160,9 +160,9 @@ class riscv64_emu(pluginTemplate):
             # function
             cmd = self.compile_cmd.format(
                 testentry['isa'].lower(), self.xlen, test, elf, compile_macros)
+            # print(cmd)
             cmd2 = self.objcopy_cmd.format(elf, self.xlen, binfile)
 
-            libnemu = '/home/leesum/workhome/ysyx/npc/libnemu.so'
 
             # if the user wants to disable running the tests and only compile the tests, then
             # the "else" clause is executed below assigning the sim command to simple no action
@@ -171,7 +171,7 @@ class riscv64_emu(pluginTemplate):
                 # set up the simulation command. Template is for spike. Please change.
                 simcmd = self.dut_exe + \
                     ' --img={0} --signature={1}'.format(
-                        os.path.join(test_dir,binfile),sig_file)
+                        os.path.join(test_dir,elf),sig_file)
             else:
                 simcmd = 'echo "NO RUN"'
 
